@@ -7,15 +7,17 @@ exports.register = async (req, res) => {
     try {
       const { email, password, type } = req.body;
       const saltRounds = 10;
-      const hashedPassword = await bcrypt.hash(password, saltRounds);
+    //   const hashedPassword = await bcrypt.hash(password, saltRounds);
       const newUser = new User({
         email,
-        password: hashedPassword,
+        password: password,
         type
       });
-      await newUser.save();
+      console.log("user : " , newUser);
+      await newUser.save({ timeout: 30000 });
       res.status(201).json(newUser);
     } catch (err) {
+        console.error(err);
       res.status(400).json({ message: err.message });
     }
   };

@@ -6,5 +6,5 @@ const handleUpload = require("../middleware/handleupload");
 router.route('/addworker').post(handleUpload,workerController.createWorker)
 // router.route('/login').get(usersController.login)
 // router.route('/logout').get(usersController.logout)
-// router.route('/profile/:id').get( usersController.profile);
+router.route('/:id').get( workerController.getWorkerById);
 module.exports = router;

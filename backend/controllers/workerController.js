@@ -14,7 +14,7 @@ const createWorker = async (req, res, next) => {
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-      console.log(user);
+      
   // Create a new worker object from the request body
    const worker = new Worker({
     userId: user._id,
@@ -23,8 +23,7 @@ const createWorker = async (req, res, next) => {
     skills: req.body.skills,
     cv: req.file.filename // Store the filename of the uploaded CV
   });
-console.log(req.file);
-console.log(worker);
+
   // Save the worker to the database
   await worker.save({ timeout: 30000 })
     .then(result => {
@@ -41,6 +40,29 @@ console.log(worker);
     });
 };
 
+const getWorkerById = async (req, res, next) => {
+    try {
+      const workerId = req.params.id;
+      const worker = await Worker.findById(workerId);
+  
+      if (!worker) {
+        return res.status(404).json({
+          message: 'Worker not found'
+        });
+      }
+  
+      res.status(200).json({
+        message: 'Worker found',
+        worker: worker
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Failed to get worker',
+        error: error
+      });
+    }
+  };
 module.exports = {
-  createWorker: createWorker
+  createWorker,
+  getWorkerById
 };

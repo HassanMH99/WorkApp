@@ -1,8 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const companyController = require('../controllers/companyController')
+const workerController = require('../controllers/workerController');
+const handleUpload = require("../middleware/handleupload");
 
-router.route('/register').post(companyController.AddCompany)
+router.route('/addworker').post(handleUpload,workerController.createWorker)
 // router.route('/login').get(usersController.login)
 // router.route('/logout').get(usersController.logout)
 // router.route('/profile/:id').get( usersController.profile);

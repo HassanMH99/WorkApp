@@ -1,11 +1,11 @@
 const mongoose = require('mongoose');
-
+const {v4:uuidv4} = require('uuid')
 const workerSchema = new mongoose.Schema({
-  id: {
-    type: String,
-    required: true,
-    unique: true
-  },
+    id: {
+        type: String,
+        default: uuidv4,
+        unique: true,
+      },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -13,10 +13,6 @@ const workerSchema = new mongoose.Schema({
     unique: true
   },
   name: {
-    type: String,
-    required: true
-  },
-  title: {
     type: String,
     required: true
   },

@@ -24,6 +24,7 @@ if(process.env.NODE_ENV !="production"){
     })
     server.use("/users",require('./routes/Usersroute'));
     server.use("/company",require('./routes/Companyroute'));
+    server.use("/worker",require('./routes/Workerrout'));
     server.listen(process.env.PORT,()=>{
         console.log(`server opening with port 5656`);
     })

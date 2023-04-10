@@ -4,22 +4,29 @@ const jwt = require('jsonwebtoken');
 const cookie = require('cookie')
 // User registration
 exports.register = async (req, res) => {
-    try {
-      const { email, password, type } = req.body;
-      const saltRounds = 10;
-    //   const hashedPassword = await bcrypt.hash(password, saltRounds);
-      const newUser = new User({
-        email,
-        password: password,
-        type
-      });
-      console.log("user : " , newUser);
-      await newUser.save({ timeout: 30000 });
-      res.status(201).json(newUser);
-    } catch (err) {
-        console.error(err);
-      res.status(400).json({ message: err.message });
+  try {
+    const { email, password, type } = req.body;
+    const saltRounds = 10;
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+    
+    // Check if email already exists
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      return res.status(409).json({ message: "This email is already registered." });
     }
+
+    const newUser = new User({
+      email,
+      password: hashedPassword,
+      type
+    });
+    console.log("user : " , newUser);
+    await newUser.save({ timeout: 30000 });
+    res.status(201).json(newUser);
+  } catch (err) {
+    console.error(err);
+    res.status(400).json({ message: err.message });
+  }
   };
 
   // User login

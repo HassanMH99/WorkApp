@@ -1,10 +1,6 @@
 const mongoose = require('mongoose');
+const {v4:uuidv4} = require('uuid')
 const jobSchema = new mongoose.Schema({
-    //   id: {
-    //     type: String,
-    //     required: true,
-    //     unique: true
-    //   },
       title: {
         type: String,
         required: true
@@ -19,19 +15,15 @@ const jobSchema = new mongoose.Schema({
       }
     });
 const companySchema = new mongoose.Schema({
-    // id: {
-    //   type: String,
-    //   required: true,
-    //   unique: true
-    // },
-    // userId: {
-    //   type: String,
-    //   required: true,
-    //   ref: 'User'
-    // },
+    userId: {
+      type: String,
+      required: true,
+      ref: 'User',
+      unique:true,
+    },
     name: {
       type: String,
-      required: true
+      required: true,
     },
     description: {
       type: String,

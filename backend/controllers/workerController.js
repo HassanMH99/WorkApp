@@ -7,38 +7,41 @@ const upload = multer({ dest: 'uploads/' }); // Multer configuration
 // Create a new worker
 const createWorker = async (req, res, next) => {
     if (!req.file) {
-        return res.status(400).json({ message: 'No file uploaded' });
-      }
-      const userId = req.body.userId;
+      return res.status(400).json({ message: 'No file uploaded' });
+    }
+    const { name, bio, skills } = req.body;
+    const userId = req.params.userId;
+
+    try {
       const user = await User.findById(userId);
       if (!user) {
         return res.status(404).json({ message: 'User not found' });
       }
-      
-  // Create a new worker object from the request body
-   const worker = new Worker({
-    userId: user._id,
-    name: req.body.name,
-    bio: req.body.bio,
-    skills: req.body.skills,
-    cv: req.file.filename // Store the filename of the uploaded CV
-  });
-
-  // Save the worker to the database
-  await worker.save({ timeout: 30000 })
-    .then(result => {
+      const existingworker = await Worker.findOne({ userId: user._id });
+      if (existingworker) {
+        return res.status(400).json({ message: 'User already has a Worker' });
+      }
+      const worker = new Worker({
+        userId: user._id,
+        name,
+        bio,
+        skills,
+        cv: req.file.filename,
+      });
+  
+      const savedWorker = await worker.save({ timeout: 30000 });
       res.status(201).json({
         message: 'Worker created successfully',
-        worker: result
+        worker: savedWorker,
       });
-    })
-    .catch(error => {
+    } catch (error) {
+      console.error(error);
       res.status(500).json({
         message: 'Failed to create worker',
-        error: error
+        error,
       });
-    });
-};
+    }
+  };
 
 const getWorkerById = async (req, res, next) => {
     try {

@@ -43,7 +43,7 @@ exports.register = async (req, res) => {
       }
   
       const token = jwt.sign(
-        { userId: user._id, email: user.email },
+        { userId: user._id, email: user.email,type:user.type },
         process.env.SECRET,
         { expiresIn: '1h' }
       );
@@ -54,12 +54,62 @@ exports.register = async (req, res) => {
         maxAge: 3600000, // 1 hour in milliseconds
       });
   
-      res.json({ message: 'Authentication successful' });
+      res.json({
+        message: 'Authentication successful',
+        user: {
+          _id: user._id,
+          name: user.name,
+          email: user.email,
+          type: user.type
+        },
+        token: token
+      });
     } catch (err) {
       res.status(400).json({ message: err.message });
     }
   };
-
+  exports.getUserByEmail = async (req, res) => {
+    try {
+      const email = req.params.email;
+      const user = await User.findOne({ email });
+      if (!user) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.status(200).json(user);
+    } catch (err) {
+      console.error(err);
+      res.status(400).json({ message: err.message });
+    }
+  }
+  exports.authCheck = async (req, res, next) => {
+    try {
+      // Check if the request contains a token
+      const token = req.cookies.token;
+      if (!token) {
+        return res.status(401).json({ message: 'Unauthorized' });
+      }
+  
+      // Verify the token
+      const decodedToken = jwt.verify(token, process.env.SECRET);
+      const userId = decodedToken.userId;
+      
+      // Check if the user exists
+      const user = await User.findById(userId);
+      if (!user) {
+        return res.status(401).json({ message: 'Unauthorized' });
+      }
+      console.log(token);
+      console.log(user);
+      console.log(decodedToken);
+      // Attach the user object to the request
+      req.user = user;
+  
+      next();
+    } catch (err) {
+      res.status(401).json({ message: 'Unauthorized' });
+    }
+  };
+  
   exports.logout = async (req, res) => {
     try {
       res.clearCookie('token'); // Clear the authentication token from the cookies

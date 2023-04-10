@@ -6,6 +6,8 @@ if(process.env.NODE_ENV !="production"){
     const server = express();
     const bodyParser = require('body-parser')
     const cookieParser = require('cookie-parser')
+    const path = require('path');
+
     connectToDb();
     const cors = require('cors')
     server.use(bodyParser.urlencoded({extended:false}))
@@ -22,6 +24,8 @@ if(process.env.NODE_ENV !="production"){
         console.log(`req for url ${url} and using method ${method}`);
         next();
     })
+    server.use('/uploads', express.static(path.join(__dirname, '../../frontend/public/uploads')));
+
     server.use("/users",require('./routes/Usersroute'));
     server.use("/company",require('./routes/Companyroute'));
     server.use("/worker",require('./routes/Workerrout'));

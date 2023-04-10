@@ -4,6 +4,9 @@ const User = require('../module/users');
 
 const upload = multer({ dest: 'uploads/' }); // Multer configuration
 
+
+
+
 // Create a new worker
 const createWorker = async (req, res, next) => {
     if (!req.file) {
@@ -11,7 +14,7 @@ const createWorker = async (req, res, next) => {
     }
     const { name, bio, skills } = req.body;
     const userId = req.params.userId;
-
+    const url = req.protocol + '://' + req.get('host')
     try {
       const user = await User.findById(userId);
       if (!user) {
@@ -44,26 +47,26 @@ const createWorker = async (req, res, next) => {
   };
 
 const getWorkerById = async (req, res, next) => {
-    try {
-      const workerId = req.params.id;
-      const worker = await Worker.findById(workerId);
-  
-      if (!worker) {
-        return res.status(404).json({
-          message: 'Worker not found'
-        });
-      }
-  
-      res.status(200).json({
-        message: 'Worker found',
-        worker: worker
-      });
-    } catch (error) {
-      res.status(500).json({
-        message: 'Failed to get worker',
-        error: error
+  try {
+    const userId = req.params.id;
+    const worker = await Worker.findOne({ userId: userId }).populate('userId');
+
+    if (!worker) {
+      return res.status(404).json({
+        message: 'Worker not found'
       });
     }
+
+    res.status(200).json({
+      message: 'Worker found',
+      worker: worker
+    });
+  } catch (error) {
+    res.status(500).json({
+      message: 'Failed to get worker',
+      error: error
+    });
+  }
   };
 module.exports = {
   createWorker,

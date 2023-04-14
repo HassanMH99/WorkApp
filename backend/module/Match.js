@@ -6,11 +6,6 @@ const matchSchema = new mongoose.Schema({
     required: true,
     unique: true
   },
-  jobId: {
-    type: String,
-    required: true,
-    ref: 'Job'
-  },
   workerId: {
     type: String,
     required: true,

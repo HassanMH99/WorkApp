@@ -38,7 +38,9 @@ export default function AddWorker() {
         cv: null,
       });
       setErrorMessage('');
+      
       alert(response.data.message);
+      window.location.href = `/worker/${userId}`
     } catch (error) {
       // Show an error message if the request fails
       if (error.response) {

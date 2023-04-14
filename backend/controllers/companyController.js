@@ -31,3 +31,25 @@ exports.AddCompany = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
   };
+  exports.getcompanyById = async (req, res, next) => {
+    try {
+      const userId = req.params.id;
+      const company = await Company.findOne({ userId: userId }).populate('userId');
+  
+      if (!company) {
+        return res.status(404).json({
+          message: 'company not found'
+        });
+      }
+      res.setHeader('Content-Disposition', 'inline');
+      res.status(200).json({
+        message: 'company found',
+        company: company
+      });
+    } catch (error) {
+      res.status(500).json({
+        message: 'Failed to get company',
+        error: error
+      });
+    }
+    };

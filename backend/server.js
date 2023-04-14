@@ -24,7 +24,7 @@ if(process.env.NODE_ENV !="production"){
         console.log(`req for url ${url} and using method ${method}`);
         next();
     })
-    server.use('/uploads', express.static(path.join(__dirname, '../../frontend/public/uploads')));
+    server.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
     server.use("/users",require('./routes/Usersroute'));
     server.use("/company",require('./routes/Companyroute'));

@@ -49,6 +49,7 @@ export default function AddCompany(){
         description: '',
         skills: '',
       });
+      window.location.href = `/company/${userId}`
     }  catch (err) {
       if (err.message === 'User already has a company') {
         setErrorMessage('You already have a company.');

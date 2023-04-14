@@ -3,7 +3,7 @@ const path = require('path');
 
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, '../../frontend/public/uploads/'));
+    cb(null, 'uploads/');
   },
   filename: function (req, file, cb) {
     cb(null,file.originalname)
@@ -26,22 +26,22 @@ const fileFilter = (req, file, cb) => {
 const upload = multer({
   storage: storage,
   limits: {
-    fileSize: 1024 * 1024 * 5 // 5MB file size limit
+    fileSize: 1024 * 1024 * 10 // 5MB file size limit
   },
   fileFilter: fileFilter
 });
 
 // Middleware function to handle file uploads
-const handleUpload = (req, res, next) => {
-  upload.single('cv')(req, res, function (error) {
-    if (error) {
-      return res.status(400).json({
-        message: error.message,
+// const handleUpload = (req, res, next) => {
+//   upload.single('cv')(req, res, function (error) {
+//     if (error) {
+//       return res.status(400).json({
+//         message: error.message,
     
-      });
-    }
-    next();
-  });
-};
+//       });
+//     }
+//     next();
+//   });
+// };
 
-module.exports = handleUpload;
+module.exports = upload;

@@ -8,43 +8,47 @@ const upload = multer({ dest: 'uploads/' }); // Multer configuration
 
 
 // Create a new worker
+const docxConverter = require('docx-pdf');
+
 const createWorker = async (req, res, next) => {
-    if (!req.file) {
-      return res.status(400).json({ message: 'No file uploaded' });
+  if (!req.file) {
+    return res.status(400).json({ message: 'No file uploaded' });
+  }
+  const { name, bio, skills } = req.body;
+  const userId = req.params.userId;
+  const url = req.protocol + '://' + req.get('host')
+  try {
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
     }
-    const { name, bio, skills } = req.body;
-    const userId = req.params.userId;
-    const url = req.protocol + '://' + req.get('host')
-    try {
-      const user = await User.findById(userId);
-      if (!user) {
-        return res.status(404).json({ message: 'User not found' });
+    const existingworker = await Worker.findOne({ userId: user._id });
+    if (existingworker) {
+      return res.status(400).json({ message: 'User already has a Worker' });
+    }
+
+    // Convert the docx file to pdf format
+    const pdfFileName = `${Date.now()}.pdf`;
+    docxConverter(`${req.file.path}`, `${req.file.destination}/${pdfFileName}`, function (err, result) {
+      if (err) {
+        return res.status(500).json({ message: 'Error converting file to pdf' });
       }
-      const existingworker = await Worker.findOne({ userId: user._id });
-      if (existingworker) {
-        return res.status(400).json({ message: 'User already has a Worker' });
-      }
+      // Save the worker object with the pdf file path
       const worker = new Worker({
         userId: user._id,
         name,
         bio,
         skills,
-        cv: req.file.filename,
+        cv: `${url}/uploads/${pdfFileName}`,
       });
-  
-      const savedWorker = await worker.save({ timeout: 30000 });
-      res.status(201).json({
-        message: 'Worker created successfully',
-        worker: savedWorker,
-      });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({
-        message: 'Failed to create worker',
-        error,
-      });
-    }
-  };
+      worker.save();
+      res.status(201).json({ message: 'Worker created successfully', worker });
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 
 const getWorkerById = async (req, res, next) => {
   try {
@@ -56,7 +60,7 @@ const getWorkerById = async (req, res, next) => {
         message: 'Worker not found'
       });
     }
-
+    res.setHeader('Content-Disposition', 'inline');
     res.status(200).json({
       message: 'Worker found',
       worker: worker

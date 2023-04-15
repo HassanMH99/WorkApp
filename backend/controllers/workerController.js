@@ -1,14 +1,14 @@
 const multer = require('multer');
 const Worker = require('../module/worker');
 const User = require('../module/users');
-
 const upload = multer({ dest: 'uploads/' }); // Multer configuration
-
-
-
+const axios = require('axios');
+const docxConverter = require('docx-pdf');
+const fs = require('fs')
+const pdfparse = require('pdf-parse')
 
 // Create a new worker
-const docxConverter = require('docx-pdf');
+
 
 const createWorker = async (req, res, next) => {
   if (!req.file) {
@@ -54,7 +54,7 @@ const getWorkerById = async (req, res, next) => {
   try {
     const userId = req.params.id;
     const worker = await Worker.findOne({ userId: userId }).populate('userId');
-
+    console.log(worker.cv);
     if (!worker) {
       return res.status(404).json({
         message: 'Worker not found'
@@ -72,7 +72,76 @@ const getWorkerById = async (req, res, next) => {
     });
   }
   };
+  const getWorkerCVInfo = async (req, res, next) => {
+    
+    const { educationKeywords, experienceKeywords } = req.body;
+    
+    try {
+      // Find the worker document with the given ID
+      const count = await Worker.countDocuments();
+      const randomIndex = Math.floor(Math.random() * count);
+      const worker = await Worker.findOne().skip(randomIndex);
+      if (!worker) {
+        return res.status(404).json({ error: 'Worker not found' });
+      }
+    
+      // Download the PDF file from the URL in the worker's cv field
+      const pdfBuffer = await axios.get(`${worker.cv}`, { responseType: 'arraybuffer' });
+      const pdfData = new Uint8Array(pdfBuffer.data);
+    
+      // Parse the PDF file using pdf-parse library
+      const pdf = await pdfparse(pdfData);
+      if (!pdf || !pdf.text) {
+        return res.status(400).json({ error: 'PDF parsing error' });
+      }
+      const numPages = pdf.numpages;
+      if (numPages < 1) {
+        return res.status(400).json({ error: 'PDF document has no pages' });
+      }
+    
+      // Extract text content from each page of the PDF file
+      const textContent = pdf.text.split('\n');
+    
+      // Search for education and experience keywords in the extracted text
+      // const defaultEducationKeywords = ['degree','average', 'bachelor', 'master', 'computer science', 'engineering','full stack'];
+      // const defaultExperienceKeywords = ['experience', 'work', 'employment', 'job', 'project', 'skill'];
+    
+      const education = [];
+      const experience = [];
+    
+      textContent.forEach(text => {
+        const lowerCaseText = text.toLowerCase();
+      
+        // Search for education keywords
+        if (educationKeywords.some(keyword => lowerCaseText.includes(keyword))) {
+          education.push(text);
+        }
+      
+        // Search for experience keywords
+        if (experienceKeywords.some(keyword => lowerCaseText.includes(keyword))) {
+          experience.push(text);
+        }
+      });
+    
+      const educationAndExperience = {
+        education: education.join(','),
+        experience: experience.join(',')
+      };
+    
+      // Send the extracted education and experience data in the response
+      res.status(200).json({ educationAndExperience });
+    } catch (error) {
+      if (error.response && error.response.status === 404) {
+        return res.status(404).json({ error: 'CV not found' });
+      }
+      console.error(error);
+      res.status(500).json({ error: 'Server error' });
+    }
+    
+    
+  };
 module.exports = {
   createWorker,
-  getWorkerById
+  getWorkerById,
+  getWorkerCVInfo
 };

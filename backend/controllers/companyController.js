@@ -31,6 +31,17 @@ exports.AddCompany = async (req, res) => {
     res.status(500).json({ message: 'Server error' });
   }
   };
+  exports.getRandomCompany = async (req, res) => {
+    try {
+      const companies = await Company.find();
+      const randomIndex = Math.floor(Math.random() * companies.length);
+      const randomCompany = companies[randomIndex];
+      res.status(200).json(randomCompany);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: 'Server error' });
+    }
+  };
   exports.getcompanyById = async (req, res, next) => {
     try {
       const userId = req.params.id;
@@ -53,3 +64,4 @@ exports.AddCompany = async (req, res) => {
       });
     }
     };
+  

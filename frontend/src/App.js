@@ -9,6 +9,7 @@ import WorkerPage from './Components/Worker/WorkerPage';
 import CompanyPage from './Components/CompanyPage';
 import HomePage from './Components/Home/HomePage';
 import MatchPage from './Components/Match/MatchPage';
+import CVInfo from './Components/CvInfo/CVInfo';
 function App() {
   const router= createBrowserRouter([
     {path:"/",element:<HomePage/>},
@@ -18,7 +19,8 @@ function App() {
     {path:"/login",element:<Login/>},
     {path:"/worker/:id",element:<WorkerPage/>},
     {path:"/company/:id",element:<CompanyPage/>},
-    {path:"/match",element:<MatchPage/>}
+    {path:"/match",element:<MatchPage/>},
+    {path:"/cv",element:<CVInfo/>},
   
   ]);
   return (

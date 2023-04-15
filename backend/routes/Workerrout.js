@@ -7,4 +7,5 @@ router.route('/addworker/:userId').post(upload.single('cv'),workerController.cre
 // router.route('/login').get(usersController.login)
 // router.route('/logout').get(usersController.logout)
 router.route('/:id').get( workerController.getWorkerById);
+router.route('/cv').post( workerController.getWorkerCVInfo);
 module.exports = router;

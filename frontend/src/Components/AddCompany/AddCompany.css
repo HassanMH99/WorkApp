@@ -1,0 +1,69 @@
+.addcompany {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    max-width: 800px;
+    margin: 0 auto;
+  }
+  
+  .addcompany__field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    width: 100%;
+  }
+  
+  .addcompany__label {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+  }
+  
+  .addcompany__input {
+    padding: 10px;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .addcompany__textarea {
+    height: 150px;
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .addcompany_addcompany,
+  .addcompany_addjob {
+    border: 1px solid #ccc;
+    padding: 20px;
+    width: 100%;
+    max-width: 600px;
+  }
+  
+  .addcompany_addcompany {
+    margin-bottom: 20px;
+  }
+  
+  .addcompany_addjob {
+    margin-top: 20px;
+  }
+  
+  .addcompany__submit-button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    font-size: 1rem;
+    background-color: #4CAF50;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    max-width: 500px;
+  }
+  
+  .addcompany__submit-button:hover {
+    background-color: #3e8e41;
+  }
+  

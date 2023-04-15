@@ -1,0 +1,56 @@
+.company {
+    margin: 20px;
+    padding: 20px;
+    border: 1px solid #ccc;
+  }
+  
+  .company__name {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+  }
+  
+  .company__description {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .company__website {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .company__location {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+  }
+  
+  .company__jobs-heading {
+    font-size: 1.4rem;
+    margin-bottom: 10px;
+  }
+  
+  .company__jobs-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .company__job {
+    margin-bottom: 20px;
+  }
+  
+  .company__job-title {
+    font-size: 1.2rem;
+    margin-bottom: 5px;
+  }
+  
+  .company__job-description {
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+  
+  .company__job-skills {
+    font-size: 1rem;
+    margin-bottom: 5px;
+  }
+  

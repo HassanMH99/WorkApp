@@ -1,7 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
-
+import './AddCompany.css'
 export default function AddCompany(){
   const { userId } = useParams();
   const [errorMessage, setErrorMessage] = useState('');
@@ -75,71 +75,92 @@ export default function AddCompany(){
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <h2>Add Company</h2>
-      <label htmlFor="name">Company Name:</label>
+    <form onSubmit={handleSubmit} className="addcompany">
+  <div className="addcompany_addcompany">
+    <h2 className="addcompany__header">Add Company</h2>
+    <div className="addcompany__field">
+      <label htmlFor="name" className="addcompany__label">Company Name:</label>
       <input
         type="text"
         id="name"
         name="name"
         value={companyFormData.name}
         onChange={handleCompanyChange}
+        className="addcompany__input"
       />
-
-      <label htmlFor="description">Description:</label>
+    </div>
+    <div className="addcompany__field">
+      <label htmlFor="description" className="addcompany__label">Description:</label>
       <textarea
         id="description"
         name="description"
         value={companyFormData.description}
         onChange={handleCompanyChange}
+        className="addcompany__input addcompany__textarea"
       />
-
-      <label htmlFor="website">Website:</label>
+    </div>
+    <div className="addcompany__field">
+      <label htmlFor="website" className="addcompany__label">Website:</label>
       <input
         type="text"
         id="website"
         name="website"
         value={companyFormData.website}
         onChange={handleCompanyChange}
+        className="addcompany__input"
       />
-
-      <label htmlFor="location">Location:</label>
+    </div>
+    <div className="addcompany__field">
+      <label htmlFor="location" className="addcompany__label">Location:</label>
       <input
         type="text"
         id="location"
         name="location"
         value={companyFormData.location}
         onChange={handleCompanyChange}
+        className="addcompany__input"
       />
+    </div>
+  </div>
 
-      <h2>Add Job</h2>
-      <label htmlFor="title">Job Title:</label>
+  <div className="addcompany_addjob">
+    <h2 className="addcompany__header">Add Job</h2>
+    <div className="addcompany__field">
+      <label htmlFor="title" className="addcompany__label">Job Title:</label>
       <input
         type="text"
         id="title"
         name="title"
         value={jobFormData.title}
         onChange={handleJobChange}
+        className="addcompany__input"
       />
-
-      <label htmlFor="description">Description:</label>
+    </div>
+    <div className="addcompany__field">
+      <label htmlFor="description" className="addcompany__label">Description:</label>
       <textarea
         id="description"
         name="description"
         value={jobFormData.description}
         onChange={handleJobChange}
+        className="addcompany__input addcompany__textarea"
       />
-
-      <label htmlFor="skills">Skills:</label>
+    </div>
+    <div className="addcompany__field">
+      <label htmlFor="skills" className="addcompany__label">Skills:</label>
       <input
         type="text"
         id="skills"
         name="skills"
         value={jobFormData.skills}
         onChange={handleJobChange}
+        className="addcompany__input"
       />
+    </div>
+  </div>
 
-      <button type="submit">Submit</button>
-    </form>
+  <button type="submit" className="addcompany__submit-button">Submit</button>
+</form>
+
   );
 };

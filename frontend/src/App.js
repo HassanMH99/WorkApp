@@ -1,12 +1,12 @@
 
 import './App.css';
-import AddCompany from './Components/AddCompany';
-import AddWorker from './Components/AddWorker';
-import Login from './Components/Login';
-import UserRegistration from './Components/UserRegistration';
+import AddCompany from './Components/AddCompany/AddCompany';
+import AddWorker from './Components/AddWorker/AddWorker';
+import Login from './Components/Login/Login';
+import UserRegistration from './Components/Register/UserRegistration';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import WorkerPage from './Components/Worker/WorkerPage';
-import CompanyPage from './Components/CompanyPage';
+import CompanyPage from './Components/CompanyPage/CompanyPage';
 import HomePage from './Components/Home/HomePage';
 import MatchPage from './Components/Match/MatchPage';
 import CVInfo from './Components/CvInfo/CVInfo';

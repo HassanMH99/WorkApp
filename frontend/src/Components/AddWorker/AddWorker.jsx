@@ -2,6 +2,7 @@ import React from 'react'
 import axios from 'axios';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
+import './AddWorker.css'
 export default function AddWorker() {
   const { userId } = useParams();
   const [worker, setWorker] = useState({
@@ -59,38 +60,55 @@ export default function AddWorker() {
     }));
   };
   return (
-    <form onSubmit={handleSubmit}>
-      {errorMessage && <div className="error">{errorMessage}</div>}
-  
-      <div>
-        <label htmlFor="name">Name:</label>
+    <div className="addWorker-container">
+      <form onSubmit={handleSubmit} className="addWorker-form">
+      {errorMessage && <div className="addWorker-error">{errorMessage}</div>}
+      <h1 className="addWorker-title">Add More Details</h1>
+      <div className="addWorker-input">
+        <label htmlFor="name" className="addWorker-label">Name:</label>
         <input
           type="text"
           id="name"
           name="name"
           value={worker.name}
           onChange={handleChange}
+          className="addWorker-text"
         />
       </div>
-      <div>
-        <label htmlFor="bio">Bio:</label>
-        <textarea id="bio" name="bio" value={worker.bio} onChange={handleChange} />
+      <div className="addWorker-input">
+        <label htmlFor="bio" className="addWorker-label">Bio:</label>
+        <textarea
+          id="bio"
+          name="bio"
+          value={worker.bio}
+          onChange={handleChange}
+          className="addWorker-textarea"
+        />
       </div>
-      <div>
-        <label htmlFor="skills">Skills:</label>
+      <div className="addWorker-input">
+        <label htmlFor="skills" className="addWorker-label">Skills:</label>
         <input
           type="text"
           id="skills"
           name="skills"
           value={worker.skills}
           onChange={handleChange}
+          className="addWorker-text"
         />
       </div>
-      <div>
-        <label htmlFor="cv">CV:</label>
-        <input type="file" id="cv" name="cv" onChange={handleChange} />
+      <div className="addWorker-input">
+        <label htmlFor="cv" className="addWorker-label">CV:</label>
+        <input
+          type="file"
+          id="cv"
+          name="cv"
+          onChange={handleChange}
+          className="addWorker-file"
+        />
       </div>
-      <button type="submit">Create Worker</button>
-    </form>
+      <button type="submit" className="addWorker-button">Create Worker</button>
+        </form>
+    </div>
+  
   );
 };
